@@ -1,5 +1,4 @@
 DV: 02 : SilentDeathWithoutKnownPosingAtCheapCoast
-Price: 1 USD
 Password Protected [https://t.me/DarkDoorChannel]
 {
   "salt": "7ebAAQ/1ZXQPVQrLzKmokA==",
@@ -8,3 +7,4 @@ Password Protected [https://t.me/DarkDoorChannel]
 }
 
 ©Humayun Shariar Himu
+

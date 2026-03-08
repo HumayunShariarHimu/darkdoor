@@ -1,5 +1,5 @@
 DV: 05 : SimpleDeathWithoutSuspect
-Price: 1 USD
+
 Password Protected [https://t.me/DarkDoorChannel]
 {
   "salt": "itJ9kqe9BnPbPIxZOeP1PA==",
@@ -8,3 +8,4 @@ Password Protected [https://t.me/DarkDoorChannel]
 }
 
 ©Humayun Shariar Himu
+

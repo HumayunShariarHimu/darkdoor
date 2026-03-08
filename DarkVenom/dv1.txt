@@ -1,5 +1,4 @@
 DV: 01 : HomeMadeCheapPsychedelic
-Price: 1 USD
 Password Protected [https://t.me/DarkDoorChannel]
 {
   "salt": "GstxjIYPaJWz8p5O34nK+g==",
@@ -8,3 +7,4 @@ Password Protected [https://t.me/DarkDoorChannel]
 }
 
 ©Humayun Shariar Himu
+

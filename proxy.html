@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="description" content="DARK PROXY VAULT — Cryptic Modal Gateway">
+  <meta name="keywords" content="Proxy, Dark Web, Anonymous, SOCKS, HTTP">
+  <meta name="author" content="Humayun Shariar Himu">
+  <title>Proxy</title>
+  <style>
+    /* ---------- ABSOLUTE MONOCHROME : BLACK, WHITE, GREY ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #000000;
+      font-family: 'Courier New', 'Fira Code', 'Source Code Pro', monospace;
+      color: #cfcfcf;
+      min-height: 100vh;
+      padding: 1.8rem 1rem;
+      position: relative;
+    }
+
+    /* heavy static / noise overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: repeating-radial-gradient(circle at 25% 40%, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+    }
+
+    /* main container */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      background: #030303;
+      border: 1px solid #232323;
+      border-radius: 2rem;
+      padding: 2rem 2rem 2.2rem;
+      box-shadow: 0 25px 40px rgba(0,0,0,0.95), inset 0 1px 0 rgba(255,255,255,0.02);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* scanline interference */
+    .container::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(0deg, rgba(30,30,30,0.18) 0px, rgba(30,30,30,0.18) 1px, transparent 1px, transparent 5px);
+      pointer-events: none;
+      border-radius: 2rem;
+    }
+
+    /* glitch header */
+    h1 {
+      font-size: 2.7rem;
+      text-align: center;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-shadow: 0 0 3px #aaa, 0 0 1px white;
+      margin-bottom: 0.3rem;
+      animation: glitchDark 1.8s infinite alternate;
+    }
+
+    @keyframes glitchDark {
+      0% { transform: translate(1px,1px); text-shadow: -1px -1px 0 #444, 1px 1px 0 #fff; }
+      25% { transform: translate(-1px,-1px); text-shadow: 1px -1px 0 #666, -1px 1px 0 #000; }
+      50% { transform: translate(1px,-1px); text-shadow: -1px 0px 0 #aaa, 1px 1px 0 #000; }
+      75% { transform: translate(-1px,1px); text-shadow: 1px 1px 0 #fff, -1px -1px 0 #222; }
+      100% { transform: translate(0px,0px); text-shadow: 0px 0px 6px #fff, 0px 0px 2px #aaa; }
+    }
+
+    .cryptic-tag {
+      text-align: center;
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      color: #686868;
+      border-bottom: 1px dashed #2a2a2a;
+      display: inline-block;
+      padding-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .tag-wrapper {
+      text-align: center;
+      margin-bottom: 1.8rem;
+    }
+
+    h2 {
+      font-size: 1.65rem;
+      margin: 2rem 0 1.3rem 0;
+      padding-left: 0.8rem;
+      border-left: 4px solid #3f3f3f;
+      color: #f5f5f5;
+      letter-spacing: -0.5px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    h2::before {
+      content: "// ";
+      color: #5e5e5e;
+    }
+
+    /* proxy entries - no numbers, only cryptic symbols */
+    p {
+      margin-bottom: 1rem;
+      font-size: 1.02rem;
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      border-left: 1px solid #1c1c1c;
+      padding-left: 1rem;
+      margin-left: 0.2rem;
+      transition: 0.1s;
+    }
+
+    p::before {
+      content: "└►";
+      color: #7a7a7a;
+      font-weight: bold;
+      margin-right: 12px;
+      font-size: 0.9rem;
+      display: inline-block;
+      width: 1.6rem;
+    }
+
+    a {
+      color: #e0e0e0;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px dotted #4c4c4c;
+      transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      cursor: pointer;
+    }
+
+    a:hover {
+      color: #ffffff;
+      border-bottom-color: #ffffff;
+      text-shadow: 0 0 4px rgba(255,255,255,0.6);
+      transform: translateX(4px);
+    }
+
+    hr {
+      margin: 2rem 0 1.2rem;
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #3a3a3a, #6e6e6e, #3a3a3a, transparent);
+    }
+
+    footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #4f4f4f;
+      border-top: 1px solid #181818;
+      padding-top: 1.4rem;
+      font-family: monospace;
+      letter-spacing: 1px;
+    }
+
+    footer span {
+      color: #606060;
+    }
+
+    .cursor-blink {
+      display: inline-block;
+      width: 7px;
+      height: 12px;
+      background-color: #aaaaaa;
+      vertical-align: middle;
+      margin-left: 6px;
+      animation: blink 1.1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      background: #070707;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #353535;
+      border-radius: 10px;
+    }
+
+    @media (max-width: 680px) {
+      .container { padding: 1.4rem; }
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.3rem; }
+      p { font-size: 0.85rem; padding-left: 0.6rem; }
+      p::before { font-size: 0.75rem; margin-right: 8px; }
+    }
+
+    .dark-badge {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 0.8rem 0 0.3rem;
+      font-size: 0.6rem;
+      color: #555;
+      font-family: monospace;
+    }
+    .dark-badge span {
+      background: #0a0a0a;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    /* ---------- MODAL (on-screen popup with X) ---------- */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.96);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s, opacity 0.2s ease;
+    }
+
+    .modal-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-container {
+      width: 85vw;
+      max-width: 1100px;
+      height: 85vh;
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 1.5rem;
+      box-shadow: 0 0 40px rgba(255,255,255,0.08);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      animation: modalFadeIn 0.2s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from { transform: scale(0.97); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1.2rem;
+      border-bottom: 1px solid #2b2b2b;
+      background: #040404;
+      border-radius: 1.5rem 1.5rem 0 0;
+    }
+
+    .modal-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #aaa;
+      font-family: monospace;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      color: #ccc;
+      font-size: 1.8rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: monospace;
+      padding: 0 8px;
+    }
+
+    .close-modal:hover {
+      color: #ffffff;
+      text-shadow: 0 0 6px white;
+      transform: scale(1.1);
+    }
+
+    .modal-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.2rem;
+      background: #010101;
+      color: #e0e0e0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .modal-content pre {
+      background: #0a0a0a;
+      padding: 1rem;
+      border-left: 3px solid #3f3f3f;
+      overflow-x: auto;
+      font-family: monospace;
+      color: #dddddd;
+    }
+
+    .loading-indicator {
+      text-align: center;
+      margin-top: 3rem;
+      color: #777;
+      font-family: monospace;
+      letter-spacing: 2px;
+    }
+
+    .error-message {
+      color: #dd8888;
+      border-left: 3px solid #aa5555;
+      padding-left: 1rem;
+      background: #1a0a0a;
+    }
+
+    /* custom scroll inside modal */
+    .modal-content::-webkit-scrollbar {
+      width: 4px;
+    }
+    .modal-content::-webkit-scrollbar-thumb {
+      background: #3a3a3a;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Proxy</h1>
+  <div class="tag-wrapper">
+    <div class="cryptic-tag">Proxy Library</div>
+  </div>
+  
+
+  <!-- ANONYMOUS SECTION -->
+  <h2>Anonymous Pxory</h2>
+  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/Anonymous_HTTP_One.md" class="proxy-link">›› Anonymous HTTP One</a></p>
+  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/Anonymous_SOCKS4_One.md" class="proxy-link">›› Anonymous SOCKS4 One</a></p>
+  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/Anonymous_SOCKS5_One.md" class="proxy-link">›› Anonymous SOCKS5 One</a></p>
+  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/Anonymous_Mixed.md" class="proxy-link">›› Anonymous Mixed</a></p>
+
+  <!-- ORDINARY GATEWAYS -->
+  <h2>Ordinary Gateways</h2>
+  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/HTTP_one.md" class="proxy-link">›› HTTP One</a></p>
+  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/HTTP_Two.md" class="proxy-link">›› HTTP Two</a></p>
+  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/SOCKS4_one.md" class="proxy-link">›› SOCKS4 One</a></p>
+  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/SOCKS4_Two.md" class="proxy-link">›› SOCKS4 Two</a></p>
+  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/SOCKS5_One.md" class="proxy-link">›› SOCKS5 One</a></p>
+  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/SOCKS5_Two.md" class="proxy-link">›› SOCKS5 Two</a></p>
+  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/Mixed.md" class="proxy-link">›› Mixed (HTTP/SOCKS)</a></p>
+
+  <hr />
+  <footer>
+    <span>Proxy ◈ DarkDoor</span><br>
+  </footer>
+</div>
+
+<!-- MODAL STRUCTURE (on-screen popup with X) -->
+<div id="proxyModal" class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-header">
+      <span class="modal-title">◈ PROXY_CONTENTS ◈</span>
+      <button class="close-modal" id="closeModalBtn">✕</button>
+    </div>
+    <div class="modal-content" id="modalContent">
+      <div class="loading-indicator">⟳ loading encrypted stream ...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // Get modal elements
+    const modalOverlay = document.getElementById('proxyModal');
+    const modalContentDiv = document.getElementById('modalContent');
+    const closeBtn = document.getElementById('closeModalBtn');
+    
+    // Helper: convert github blob URL to raw URL (for fetching markdown content)
+    function getRawUrl(githubBlobUrl) {
+      // example: https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/Anonymous_HTTP_One.md
+      // raw: https://raw.githubusercontent.com/HumayunShariarHimu/darkdoor/main/Proxy/Anonymous_HTTP_One.md
+      let url = githubBlobUrl;
+      if (url.includes('github.com') && url.includes('/blob/')) {
+        url = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+      }
+      return url;
+    }
+    
+    // fetch and display content in modal
+    async function loadProxyContent(linkElement, originalUrl) {
+      // show modal first with loading
+      modalOverlay.classList.add('active');
+      modalContentDiv.innerHTML = '<div class="loading-indicator">⛁ fetching dark data ⛁</div>';
+      
+      const rawUrl = getRawUrl(originalUrl);
+      
+      try {
+        const response = await fetch(rawUrl);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const text = await response.text();
+        
+        // render markdown-ish as plain text with monospace, preserve formatting
+        // To keep cryptic but readable, we wrap in <pre> for raw markdown style.
+        // Add some styling to make it look like terminal output.
+        const formatted = `<pre style="font-family: 'Courier New', monospace; background: #050505; padding: 1rem; border: 1px solid #2a2a2a; border-radius: 8px; overflow-x: auto; white-space: pre-wrap; color: #cfcfcf;">${escapeHtml(text)}</pre>`;
+        modalContentDiv.innerHTML = formatted;
+      } catch (err) {
+        console.error(err);
+        modalContentDiv.innerHTML = `<div class="error-message">⚠️ ERROR: unable to fetch proxy data<br>${err.message}<br><span style="color:#888;">raw url: ${rawUrl}</span></div>`;
+      }
+    }
+    
+    // simple escape to prevent XSS
+    function escapeHtml(str) {
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+        return c;
+      });
+    }
+    
+    // attach click events to all proxy links
+    const proxyLinks = document.querySelectorAll('.proxy-link');
+    proxyLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        if (href) {
+          loadProxyContent(link, href);
+        }
+      });
+    });
+    
+    // close modal function
+    function closeModal() {
+      modalOverlay.classList.remove('active');
+      // clear content after animation ends? optional
+      setTimeout(() => {
+        if (!modalOverlay.classList.contains('active')) {
+          modalContentDiv.innerHTML = '<div class="loading-indicator">⟳ idle</div>';
+        }
+      }, 200);
+    }
+    
+    closeBtn.addEventListener('click', closeModal);
+    // click on overlay background also closes
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) closeModal();
+    });
+    
+    // escape key closes modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+        closeModal();
+      }
+    });
+    
+    // small console dark vibe
+    console.log("%c[ DARK MODAL ACTIVE ] → every proxy opens in-screen popup with [X] button", "color: #aaa; background: #000; font-size: 11px; border-left: 2px solid white; padding: 3px 8px;");
+  })();
+</script>
+</body>
+</html>

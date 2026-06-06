@@ -1,492 +1,718 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <meta name="description" content="DARK PROXY VAULT — Cryptic Modal Gateway">
-  <meta name="keywords" content="Proxy, Dark Web, Anonymous, SOCKS, HTTP">
-  <meta name="author" content="Humayun Shariar Himu">
-  <title>ProxyZone</title>
-  <style>
-    /* ---------- ABSOLUTE MONOCHROME : BLACK, WHITE, GREY ---------- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="description" content="DARK PROXY VAULT — Cryptic Modal Gateway">
+    <meta name="keywords" content="Proxy, Dark, Anonymous, SOCKS, HTTP">
+    <meta name="author" content="Humayun Shariar Himu">
+    <title>ProxyZone | DarkDoor</title>
+    <style>
+        /* ---------- ABSOLUTE MONOCHROME : BLACK & WHITE ONLY ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      background: #000000;
-      font-family: 'Courier New', 'Fira Code', 'Source Code Pro', monospace;
-      color: #cfcfcf;
-      min-height: 100vh;
-      padding: 1.8rem 1rem;
-      position: relative;
-    }
+        body {
+            background: #000;
+            font-family: 'Courier New', 'Fira Code', 'Source Code Pro', monospace;
+            color: #fff;
+            min-height: 100vh;
+            padding: 1.8rem 1rem;
+            position: relative;
+        }
 
-    /* heavy static / noise overlay */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: repeating-radial-gradient(circle at 25% 40%, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 32px 32px;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.45;
-    }
+        /* static noise overlay – white dots on black */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: repeating-radial-gradient(circle at 25% 40%, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+            pointer-events: none;
+            z-index: 0;
+        }
 
-    /* main container */
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      background: #030303;
-      border: 1px solid #232323;
-      border-radius: 2rem;
-      padding: 2rem 2rem 2.2rem;
-      box-shadow: 0 25px 40px rgba(0,0,0,0.95), inset 0 1px 0 rgba(255,255,255,0.02);
-      position: relative;
-      z-index: 2;
-    }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background: #000;
+            border: 1px solid #fff;
+            border-radius: 2rem;
+            padding: 2rem 2rem 2.2rem;
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+        }
 
-    /* scanline interference */
-    .container::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: repeating-linear-gradient(0deg, rgba(30,30,30,0.18) 0px, rgba(30,30,30,0.18) 1px, transparent 1px, transparent 5px);
-      pointer-events: none;
-      border-radius: 2rem;
-    }
+        .container::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 1px, transparent 1px, transparent 5px);
+            pointer-events: none;
+            border-radius: 2rem;
+        }
 
-    /* glitch header */
-    h1 {
-      font-size: 2.7rem;
-      text-align: center;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      
-      color: #ffffff;
-      text-shadow: 0 0 3px #aaa, 0 0 1px white;
-      margin-bottom: 0.3rem;
-      animation: glitchDark 1.8s infinite alternate;
-    }
+        h1 {
+            font-size: 2.7rem;
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #fff;
+            text-shadow: 0 0 3px #fff, 0 0 1px #fff;
+            margin-bottom: 0.3rem;
+            animation: glitchDark 1.8s infinite alternate;
+        }
 
-    @keyframes glitchDark {
-      0% { transform: translate(1px,1px); text-shadow: -1px -1px 0 #444, 1px 1px 0 #fff; }
-      25% { transform: translate(-1px,-1px); text-shadow: 1px -1px 0 #666, -1px 1px 0 #000; }
-      50% { transform: translate(1px,-1px); text-shadow: -1px 0px 0 #aaa, 1px 1px 0 #000; }
-      75% { transform: translate(-1px,1px); text-shadow: 1px 1px 0 #fff, -1px -1px 0 #222; }
-      100% { transform: translate(0px,0px); text-shadow: 0px 0px 6px #fff, 0px 0px 2px #aaa; }
-    }
+        @keyframes glitchDark {
+            0% {
+                transform: translate(1px, 1px);
+                text-shadow: -1px -1px 0 #000, 1px 1px 0 #fff;
+            }
+            25% {
+                transform: translate(-1px, -1px);
+                text-shadow: 1px -1px 0 #000, -1px 1px 0 #fff;
+            }
+            50% {
+                transform: translate(1px, -1px);
+                text-shadow: -1px 0px 0 #000, 1px 1px 0 #fff;
+            }
+            75% {
+                transform: translate(-1px, 1px);
+                text-shadow: 1px 1px 0 #000, -1px -1px 0 #fff;
+            }
+            100% {
+                transform: translate(0px, 0px);
+                text-shadow: 0px 0px 6px #fff, 0px 0px 2px #fff;
+            }
+        }
 
-    .cryptic-tag {
-      text-align: center;
-      font-size: 0.7rem;
-      letter-spacing: 4px;
-      color: #686868;
-      border-bottom: 1px dashed #2a2a2a;
-      display: inline-block;
-      padding-bottom: 6px;
-      text-transform: uppercase;
-    }
+        .cryptic-tag {
+            text-align: center;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            color: #fff;
+            border-bottom: 1px dashed #fff;
+            display: inline-block;
+            padding-bottom: 6px;
+            text-transform: uppercase;
+        }
 
-    .tag-wrapper {
-      text-align: center;
-      margin-bottom: 1.8rem;
-    }
+        .tag-wrapper {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
 
-    h2 {
-      font-size: 1.65rem;
-      margin: 2rem 0 1.3rem 0;
-      padding-left: 0.8rem;
-      border-left: 4px solid #3f3f3f;
-      color: #f5f5f5;
-      letter-spacing: -0.5px;
-      font-weight: 500;
-      text-transform: uppercase;
-    }
+        h2 {
+            font-size: 1.65rem;
+            margin: 2rem 0 1.3rem 0;
+            padding-left: 0.8rem;
+            border-left: 4px solid #fff;
+            color: #fff;
+            letter-spacing: -0.5px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
 
-    h2::before {
-      content: "// ";
-      color: #5e5e5e;
-    }
+        h2::before {
+            content: "// ";
+            color: #fff;
+            opacity: 0.7;
+        }
 
-    /* proxy entries - no numbers, only cryptic symbols */
-    p {
-      margin-bottom: 1rem;
-      font-size: 1.02rem;
-      display: flex;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      border-left: 1px solid #1c1c1c;
-      padding-left: 1rem;
-      margin-left: 0.2rem;
-      transition: 0.1s;
-    }
+        /* proxy entries */
+        p {
+            margin-bottom: 1rem;
+            font-size: 1.02rem;
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            border-left: 1px solid #fff;
+            padding-left: 1rem;
+            margin-left: 0.2rem;
+            transition: 0.1s;
+        }
 
-    p::before {
-      content: "└►";
-      color: #7a7a7a;
-      font-weight: bold;
-      margin-right: 12px;
-      font-size: 0.9rem;
-      display: inline-block;
-      width: 1.6rem;
-    }
+        p::before {
+            content: "└►";
+            color: #fff;
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 0.9rem;
+            display: inline-block;
+            width: 1.6rem;
+        }
 
-    a {
-      color: #e0e0e0;
-      text-decoration: none;
-      font-weight: 500;
-      border-bottom: 1px dotted #4c4c4c;
-      transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      cursor: pointer;
-    }
+        a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted #fff;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
 
-    a:hover {
-      color: #ffffff;
-      border-bottom-color: #ffffff;
-      text-shadow: 0 0 4px rgba(255,255,255,0.6);
-      transform: translateX(4px);
-    }
+        a:hover {
+            color: #fff;
+            border-bottom-color: #fff;
+            text-shadow: 0 0 6px #fff;
+            transform: translateX(4px);
+        }
 
-    hr {
-      margin: 2rem 0 1.2rem;
-      border: none;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #3a3a3a, #6e6e6e, #3a3a3a, transparent);
-    }
+        hr {
+            margin: 2rem 0 1.2rem;
+            border: none;
+            height: 1px;
+            background: #fff;
+            opacity: 0.4;
+        }
 
-    footer {
-      margin-top: 2rem;
-      text-align: center;
-      font-size: 0.7rem;
-      color: #4f4f4f;
-      border-top: 1px solid #181818;
-      padding-top: 1.4rem;
-      font-family: monospace;
-      letter-spacing: 1px;
-    }
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #fff;
+            border-top: 1px solid #fff;
+            padding-top: 1.4rem;
+            font-family: monospace;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
 
-    footer span {
-      color: #606060;
-    }
+        .cursor-blink {
+            display: inline-block;
+            width: 7px;
+            height: 12px;
+            background-color: #fff;
+            vertical-align: middle;
+            margin-left: 6px;
+            animation: blink 1.1s step-end infinite;
+        }
 
-    .cursor-blink {
-      display: inline-block;
-      width: 7px;
-      height: 12px;
-      background-color: #aaaaaa;
-      vertical-align: middle;
-      margin-left: 6px;
-      animation: blink 1.1s step-end infinite;
-    }
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
+        ::-webkit-scrollbar {
+            width: 5px;
+            background: #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #fff;
+            border-radius: 10px;
+        }
 
-    ::-webkit-scrollbar {
-      width: 5px;
-      background: #070707;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #353535;
-      border-radius: 10px;
-    }
+        @media (max-width: 680px) {
+            .container {
+                padding: 1.4rem;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            h2 {
+                font-size: 1.3rem;
+            }
+            p {
+                font-size: 0.85rem;
+                padding-left: 0.6rem;
+            }
+            p::before {
+                font-size: 0.75rem;
+                margin-right: 8px;
+            }
+        }
 
-    @media (max-width: 680px) {
-      .container { padding: 1.4rem; }
-      h1 { font-size: 2rem; }
-      h2 { font-size: 1.3rem; }
-      p { font-size: 0.85rem; padding-left: 0.6rem; }
-      p::before { font-size: 0.75rem; margin-right: 8px; }
-    }
+        .dark-badge {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 0.8rem 0 0.3rem;
+            font-size: 0.6rem;
+            color: #fff;
+            font-family: monospace;
+            opacity: 0.7;
+        }
+        .dark-badge span {
+            background: #000;
+            border: 1px solid #fff;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
 
-    .dark-badge {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin: 0.8rem 0 0.3rem;
-      font-size: 0.6rem;
-      color: #555;
-      font-family: monospace;
-    }
-    .dark-badge span {
-      background: #0a0a0a;
-      padding: 2px 8px;
-      border-radius: 20px;
-    }
+        /* ---------- MODAL ---------- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.96);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.2s ease;
+        }
 
-    /* ---------- MODAL (on-screen popup with X) ---------- */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.96);
-      backdrop-filter: blur(8px);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      visibility: hidden;
-      opacity: 0;
-      transition: visibility 0s, opacity 0.2s ease;
-    }
+        .modal-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
 
-    .modal-overlay.active {
-      visibility: visible;
-      opacity: 1;
-    }
+        .modal-container {
+            width: 90vw;
+            max-width: 1100px;
+            height: 85vh;
+            background: #000;
+            border: 1px solid #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            animation: modalFadeIn 0.2s ease;
+        }
 
-    .modal-container {
-      width: 85vw;
-      max-width: 1100px;
-      height: 85vh;
-      background: #000000;
-      border: 1px solid #3a3a3a;
-      border-radius: 1.5rem;
-      box-shadow: 0 0 40px rgba(255,255,255,0.08);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      animation: modalFadeIn 0.2s ease;
-    }
+        @keyframes modalFadeIn {
+            from {
+                transform: scale(0.97);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
 
-    @keyframes modalFadeIn {
-      from { transform: scale(0.97); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1.2rem;
+            border-bottom: 1px solid #fff;
+            background: #000;
+            border-radius: 1.5rem 1.5rem 0 0;
+        }
 
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.8rem 1.2rem;
-      border-bottom: 1px solid #2b2b2b;
-      background: #040404;
-      border-radius: 1.5rem 1.5rem 0 0;
-    }
+        .modal-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+            font-family: monospace;
+        }
 
-    .modal-title {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: #aaa;
-      font-family: monospace;
-    }
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+        }
 
-    .close-modal {
-      background: none;
-      border: none;
-      color: #ccc;
-      font-size: 1.8rem;
-      line-height: 1;
-      cursor: pointer;
-      transition: 0.2s;
-      font-family: monospace;
-      padding: 0 8px;
-    }
+        .copy-all-btn,
+        .close-modal {
+            background: none;
+            border: 1px solid #fff;
+            color: #fff;
+            font-family: monospace;
+            padding: 4px 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            transition: 0.2s;
+            border-radius: 4px;
+        }
 
-    .close-modal:hover {
-      color: #ffffff;
-      text-shadow: 0 0 6px white;
-      transform: scale(1.1);
-    }
+        .copy-all-btn:hover,
+        .close-modal:hover {
+            background: #fff;
+            color: #000;
+            text-shadow: none;
+            box-shadow: 0 0 10px #fff;
+        }
 
-    .modal-content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1.2rem;
-      background: #010101;
-      color: #e0e0e0;
-      font-family: 'Courier New', monospace;
-      font-size: 0.9rem;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
+        .close-modal {
+            font-size: 1.8rem;
+            line-height: 1;
+            padding: 0 8px;
+        }
 
-    .modal-content pre {
-      background: #0a0a0a;
-      padding: 1rem;
-      border-left: 3px solid #3f3f3f;
-      overflow-x: auto;
-      font-family: monospace;
-      color: #dddddd;
-    }
+        .modal-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.2rem;
+            background: #000;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
 
-    .loading-indicator {
-      text-align: center;
-      margin-top: 3rem;
-      color: #777;
-      font-family: monospace;
-      letter-spacing: 2px;
-    }
+        .loading-indicator {
+            text-align: center;
+            margin-top: 3rem;
+            color: #fff;
+            font-family: monospace;
+            letter-spacing: 2px;
+            opacity: 0.7;
+        }
 
-    .error-message {
-      color: #dd8888;
-      border-left: 3px solid #aa5555;
-      padding-left: 1rem;
-      background: #1a0a0a;
-    }
+        .error-message {
+            color: #fff;
+            border-left: 3px solid #fff;
+            padding-left: 1rem;
+            background: #000;
+        }
 
-    /* custom scroll inside modal */
-    .modal-content::-webkit-scrollbar {
-      width: 4px;
-    }
-    .modal-content::-webkit-scrollbar-thumb {
-      background: #3a3a3a;
-    }
-  </style>
+        /* proxy line with copy button */
+        .proxy-line {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.2rem;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.2);
+            padding: 2px 0;
+        }
+
+        .proxy-text {
+            flex: 1;
+            font-family: monospace;
+            word-break: break-all;
+        }
+
+        .copy-icon {
+            background: none;
+            border: 1px solid #fff;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            margin-left: 8px;
+            transition: 0.2s;
+            white-space: nowrap;
+            font-family: monospace;
+        }
+
+        .copy-icon:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .copy-icon.copied {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 0 8px #fff;
+        }
+
+        .non-proxy-line {
+            color: #fff;
+            opacity: 0.85;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+
+        /* custom scroll inside modal */
+        .modal-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #fff;
+            border-radius: 10px;
+        }
+
+        .error-loading-files {
+            color: #fff;
+            border-left: 3px solid #fff;
+            padding: 1rem;
+            background: #000;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-  <h1>ProxyZone</h1>
-  <div class="tag-wrapper">
-    <div class="cryptic-tag">Proxy Library</div>
-  </div>
-  
+    <div class="container">
+        <h1>ProxyZone</h1>
+        <div class="tag-wrapper">
+            <div class="cryptic-tag">Proxy Library</div>
+        </div>
 
-  <!-- ANONYMOUS SECTION -->
-  <h2>Anonymous Pxory</h2>
-  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/Anonymous_HTTP_One.md" class="proxy-link">›› Anonymous HTTP One</a></p>
-  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/Anonymous_SOCKS4_One.md" class="proxy-link">›› Anonymous SOCKS4 One</a></p>
-  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/Anonymous_SOCKS5_One.md" class="proxy-link">›› Anonymous SOCKS5 One</a></p>
-  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/Anonymous_Mixed.md" class="proxy-link">›› Anonymous Mixed</a></p>
+        <!-- Dynamically loaded sections will appear here -->
+        <div id="proxySections">
+            <div class="loading-indicator">Fetching proxy files from DarkDoor...</div>
+        </div>
 
-  <!-- ORDINARY GATEWAYS -->
-  <h2>Ordinary Gateways</h2>
-  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/HTTP_one.md" class="proxy-link">›› HTTP One</a></p>
-  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/HTTP_Two.md" class="proxy-link">›› HTTP Two</a></p>
-  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/SOCKS4_one.md" class="proxy-link">›› SOCKS4 One</a></p>
-  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/SOCKS4_Two.md" class="proxy-link">›› SOCKS4 Two</a></p>
-  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/SOCKS5_One.md" class="proxy-link">›› SOCKS5 One</a></p>
-  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/SOCKS5_Two.md" class="proxy-link">›› SOCKS5 Two</a></p>
-  <p><a href="https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/Mixed.md" class="proxy-link">›› Mixed (HTTP/SOCKS)</a></p>
-
-  <hr />
-  <footer>
-    <span>ProxyZone ◈ DarkDoor</span><br>
-  </footer>
-</div>
-
-<!-- MODAL STRUCTURE (on-screen popup with X) -->
-<div id="proxyModal" class="modal-overlay">
-  <div class="modal-container">
-    <div class="modal-header">
-      <span class="modal-title">◈ PROXY_CONTENTS ◈</span>
-      <button class="close-modal" id="closeModalBtn">✕</button>
+        <footer>
+            <span><b>ProxyZone</b> Extension of <b>DarkDoor</b></span><br>            
+        </footer>
     </div>
-    <div class="modal-content" id="modalContent">
-      <div class="loading-indicator">⟳ loading encrypted stream ...</div>
-    </div>
-  </div>
-</div>
 
-<script>
-  (function() {
-    // Get modal elements
-    const modalOverlay = document.getElementById('proxyModal');
-    const modalContentDiv = document.getElementById('modalContent');
-    const closeBtn = document.getElementById('closeModalBtn');
-    
-    // Helper: convert github blob URL to raw URL (for fetching markdown content)
-    function getRawUrl(githubBlobUrl) {
-      // example: https://github.com/HumayunShariarHimu/darkdoor/blob/main/Proxy/Anonymous_HTTP_One.md
-      // raw: https://raw.githubusercontent.com/HumayunShariarHimu/darkdoor/main/Proxy/Anonymous_HTTP_One.md
-      let url = githubBlobUrl;
-      if (url.includes('github.com') && url.includes('/blob/')) {
-        url = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
-      }
-      return url;
-    }
-    
-    // fetch and display content in modal
-    async function loadProxyContent(linkElement, originalUrl) {
-      // show modal first with loading
-      modalOverlay.classList.add('active');
-      modalContentDiv.innerHTML = '<div class="loading-indicator">⛁ fetching dark data ⛁</div>';
-      
-      const rawUrl = getRawUrl(originalUrl);
-      
-      try {
-        const response = await fetch(rawUrl);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const text = await response.text();
-        
-        // render markdown-ish as plain text with monospace, preserve formatting
-        // To keep cryptic but readable, we wrap in <pre> for raw markdown style.
-        // Add some styling to make it look like terminal output.
-        const formatted = `<pre style="font-family: 'Courier New', monospace; background: #050505; padding: 1rem; border: 1px solid #2a2a2a; border-radius: 8px; overflow-x: auto; white-space: pre-wrap; color: #cfcfcf;">${escapeHtml(text)}</pre>`;
-        modalContentDiv.innerHTML = formatted;
-      } catch (err) {
-        console.error(err);
-        modalContentDiv.innerHTML = `<div class="error-message">⚠️ ERROR: unable to fetch proxy data<br>${err.message}<br><span style="color:#888;">raw url: ${rawUrl}</span></div>`;
-      }
-    }
-    
-    // simple escape to prevent XSS
-    function escapeHtml(str) {
-      return str.replace(/[&<>]/g, function(m) {
-        if (m === '&') return '&amp;';
-        if (m === '<') return '&lt;';
-        if (m === '>') return '&gt;';
-        return m;
-      }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-        return c;
-      });
-    }
-    
-    // attach click events to all proxy links
-    const proxyLinks = document.querySelectorAll('.proxy-link');
-    proxyLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const href = link.getAttribute('href');
-        if (href) {
-          loadProxyContent(link, href);
-        }
-      });
-    });
-    
-    // close modal function
-    function closeModal() {
-      modalOverlay.classList.remove('active');
-      // clear content after animation ends? optional
-      setTimeout(() => {
-        if (!modalOverlay.classList.contains('active')) {
-          modalContentDiv.innerHTML = '<div class="loading-indicator">⟳ idle</div>';
-        }
-      }, 200);
-    }
-    
-    closeBtn.addEventListener('click', closeModal);
-    // click on overlay background also closes
-    modalOverlay.addEventListener('click', (e) => {
-      if (e.target === modalOverlay) closeModal();
-    });
-    
-    // escape key closes modal
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
-        closeModal();
-      }
-    });
-    
-    // small console dark vibe
-    console.log("%c[ DARK MODAL ACTIVE ] → every proxy opens in-screen popup with [X] button", "color: #aaa; background: #000; font-size: 11px; border-left: 2px solid white; padding: 3px 8px;");
-  })();
-</script>
+    <!-- MODAL STRUCTURE -->
+    <div id="proxyModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <span class="modal-title">◈ PROXY_CONTENTS ◈</span>
+                <div class="modal-actions">
+                    <button class="copy-all-btn" id="copyAllBtn" title="Copy all content">COPY ALL</button>
+                    <button class="close-modal" id="closeModalBtn">✕</button>
+                </div>
+            </div>
+            <div class="modal-content" id="modalContent">
+                <div class="loading-indicator">⟳ loading encrypted stream ...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ---------- CONFIG ----------
+            const GITHUB_API_URL = 'https://api.github.com/repos/HumayunShariarHimu/darkdoor/contents/Proxy';
+            const modalOverlay = document.getElementById('proxyModal');
+            const modalContentDiv = document.getElementById('modalContent');
+            const closeBtn = document.getElementById('closeModalBtn');
+            const copyAllBtn = document.getElementById('copyAllBtn');
+            const proxySectionsDiv = document.getElementById('proxySections');
+
+            // ---------- HELPER: classify file ----------
+            function isAnonymous(filename) {
+                return filename.toLowerCase().startsWith('anonymous');
+            }
+
+            function isOrdinary(filename) {
+                const lower = filename.toLowerCase();
+                return lower.includes('http') || lower.includes('socks') || lower.includes('mixed');
+            }
+
+            // ---------- Fetch directory contents and build UI ----------
+            async function fetchAndRenderFileList() {
+                try {
+                    const response = await fetch(GITHUB_API_URL);
+                    if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
+                    const files = await response.json();
+
+                    // Filter only .md and .txt
+                    const proxyFiles = files.filter(file =>
+                        file.type === 'file' && (file.name.endsWith('.md') || file.name.endsWith('.txt'))
+                    );
+
+                    if (proxyFiles.length === 0) {
+                        proxySectionsDiv.innerHTML =
+                            '<div class="error-loading-files">⚠️ No proxy files found in the repository.</div>';
+                        return;
+                    }
+
+                    // Group files
+                    const anonymousFiles = [];
+                    const ordinaryFiles = [];
+                    const otherFiles = [];
+
+                    proxyFiles.forEach(file => {
+                        if (isAnonymous(file.name)) {
+                            anonymousFiles.push(file);
+                        } else if (isOrdinary(file.name)) {
+                            ordinaryFiles.push(file);
+                        } else {
+                            otherFiles.push(file);
+                        }
+                    });
+
+                    // Build HTML
+                    let html = '';
+
+                    if (anonymousFiles.length > 0) {
+                        html += '<h2>Anonymous Proxies</h2>';
+                        anonymousFiles.forEach(file => {
+                            html +=
+                                `<p><a href="#" class="proxy-link" data-download-url="${file.download_url}" data-filename="${file.name}">›› ${file.name}</a></p>`;
+                        });
+                    }
+
+                    if (ordinaryFiles.length > 0) {
+                        html += '<h2>Ordinary Gateways</h2>';
+                        ordinaryFiles.forEach(file => {
+                            html +=
+                                `<p><a href="#" class="proxy-link" data-download-url="${file.download_url}" data-filename="${file.name}">›› ${file.name}</a></p>`;
+                        });
+                    }
+
+                    if (otherFiles.length > 0) {
+                        html += '<h2>Other Proxies</h2>';
+                        otherFiles.forEach(file => {
+                            html +=
+                                `<p><a href="#" class="proxy-link" data-download-url="${file.download_url}" data-filename="${file.name}">›› ${file.name}</a></p>`;
+                        });
+                    }
+
+                    proxySectionsDiv.innerHTML = html;
+
+                    // Attach click events to the new links
+                    document.querySelectorAll('.proxy-link').forEach(link => {
+                        link.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const downloadUrl = link.getAttribute('data-download-url');
+                            const filename = link.getAttribute('data-filename');
+                            if (downloadUrl) {
+                                loadProxyContent(downloadUrl, filename);
+                            }
+                        });
+                    });
+
+                } catch (error) {
+                    console.error(error);
+                    proxySectionsDiv.innerHTML =
+                        `<div class="error-loading-files">⚠️ Failed to load file list: ${error.message}</div>`;
+                }
+            }
+
+            // ---------- MODAL: Fetch and display content ----------
+            async function loadProxyContent(downloadUrl, filename) {
+                // Show modal with loading state
+                modalOverlay.classList.add('active');
+                modalContentDiv.innerHTML = '<div class="loading-indicator">⛁ fetching dark data ⛁</div>';
+
+                try {
+                    const response = await fetch(downloadUrl);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const text = await response.text();
+
+                    // Store raw text for "Copy All"
+                    modalContentDiv.dataset.rawContent = text;
+
+                    // Render content: detect proxy lines and add copy buttons
+                    const lines = text.split('\n');
+                    let formattedHtml = '';
+
+                    // Regex for proxy pattern: optional user:pass@ then IP:port
+                    const proxyRegex = /^(?:[\w.-]+:[\w.-]+@)?(?:\d{1,3}\.){3}\d{1,3}:\d{1,5}$/;
+
+                    lines.forEach(line => {
+                        const trimmed = line.trim();
+                        if (proxyRegex.test(trimmed)) {
+                            // It's a proxy line
+                            formattedHtml += `
+                                <div class="proxy-line">
+                                    <span class="proxy-text">${escapeHtml(trimmed)}</span>
+                                    <button class="copy-icon" data-copy-text="${escapeHtml(trimmed)}">COPY</button>
+                                </div>`;
+                        } else {
+                            // Regular line, keep as preformatted but with monospace
+                            formattedHtml +=
+                                `<div class="non-proxy-line">${escapeHtml(line) || '&nbsp;'}</div>`;
+                        }
+                    });
+
+                    modalContentDiv.innerHTML = formattedHtml;
+
+                    // Attach copy events for individual proxy lines
+                    document.querySelectorAll('.copy-icon').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const textToCopy = btn.getAttribute('data-copy-text');
+                            copyToClipboard(textToCopy);
+                            // Visual feedback
+                            btn.classList.add('copied');
+                            setTimeout(() => btn.classList.remove('copied'), 1500);
+                        });
+                    });
+
+                } catch (err) {
+                    console.error(err);
+                    modalContentDiv.innerHTML = `
+                        <div class="error-message">
+                            ⚠️ ERROR: unable to fetch proxy data<br>
+                            ${err.message}<br>
+                            <span style="opacity:0.7;">url: ${downloadUrl}</span>
+                        </div>`;
+                    delete modalContentDiv.dataset.rawContent;
+                }
+            }
+
+            // ---------- Copy to clipboard ----------
+            function copyToClipboard(text) {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).catch(err => console.error('Clipboard write failed', err));
+                } else {
+                    // Fallback for older browsers
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                    } catch (e) {
+                        console.error('Fallback copy failed', e);
+                    }
+                    document.body.removeChild(textarea);
+                }
+            }
+
+            // ---------- "Copy All" button ----------
+            copyAllBtn.addEventListener('click', () => {
+                const rawContent = modalContentDiv.dataset.rawContent;
+                if (rawContent) {
+                    copyToClipboard(rawContent);
+                    // brief visual feedback on button
+                    copyAllBtn.textContent = 'COPIED!';
+                    setTimeout(() => { copyAllBtn.textContent = 'COPY ALL'; }, 1500);
+                } else {
+                    alert('No content to copy.');
+                }
+            });
+
+            // ---------- Modal close ----------
+            function closeModal() {
+                modalOverlay.classList.remove('active');
+                setTimeout(() => {
+                    if (!modalOverlay.classList.contains('active')) {
+                        modalContentDiv.innerHTML = '<div class="loading-indicator">⟳ idle</div>';
+                        delete modalContentDiv.dataset.rawContent;
+                    }
+                }, 200);
+            }
+
+            closeBtn.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeModal();
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+
+            // ---------- HTML escape ----------
+            function escapeHtml(str) {
+                return str.replace(/[&<>]/g, function(m) {
+                    if (m === '&') return '&amp;';
+                    if (m === '<') return '&lt;';
+                    if (m === '>') return '&gt;';
+                    return m;
+                });
+            }
+
+            // ---------- Start ----------
+            fetchAndRenderFileList();
+
+            console.log("%c[ MONOCHROME PROXY VAULT ACTIVE ] — pure black & white, copy‑ready",
+                "color: #fff; background: #000; font-size: 11px; border: 1px solid #fff; padding: 3px 8px;");
+        })();
+    </script>
 </body>
 </html>

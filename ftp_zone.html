@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>FTP Zone - File Transfer Protocol Servers Vault</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+            color: #ffffff;
+            padding: 1rem;
+            line-height: 1.4;
+        }
+
+        .app {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .zone-header {
+            text-align: center;
+            border-bottom: 1px solid #ffffff;
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+        .zone-header h1 {
+            font-weight: 400;
+            letter-spacing: -0.5px;
+            font-size: 1.8rem;
+            text-transform: ;
+        }
+        .zone-header p {
+            font-size: 0.7rem;
+            opacity: 0.6;
+            margin-top: 0.4rem;
+        }
+
+        .control-panel {
+            background: #0a0a0a;
+            border: 1px solid #2a2a2a;
+            border-radius: 28px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem;
+        }
+        .ctrl-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            align-items: center;
+        }
+        select, input, button {
+            background: #000000;
+            border: 1px solid #ffffff;
+            color: #ffffff;
+            font-family: monospace;
+            font-size: 0.75rem;
+            padding: 0.45rem 0.9rem;
+            border-radius: 60px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        button {
+            cursor: pointer;
+            background: transparent;
+            font-weight: 500;
+        }
+        button:hover {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+        }
+        button:active {
+            transform: scale(0.96);
+        }
+        input {
+            width: 70px;
+            text-align: center;
+        }
+        .stats {
+            display: flex;
+            gap: 1rem;
+            background: #0c0c0c;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            border: 1px solid #222;
+            font-size: 0.75rem;
+        }
+        .stats div {
+            letter-spacing: 0.3px;
+        }
+        .stats span {
+            font-weight: bold;
+            margin-left: 0.2rem;
+        }
+
+        .progress-area {
+            background: #030303;
+            border: 1px solid #1f1f1f;
+            border-radius: 24px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .progress-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+        }
+        .bar {
+            flex: 1;
+            height: 8px;
+            background: #1a1a1a;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            width: 0%;
+            height: 100%;
+            background: #ffffff;
+            transition: width 0.1s linear;
+        }
+        .progress-text {
+            font-size: 0.75rem;
+            min-width: 50px;
+        }
+        .current-url {
+            font-size: 0.7rem;
+            color: #aaa;
+            word-break: break-all;
+            border-top: 1px dashed #2a2a2a;
+            margin-top: 0.7rem;
+            padding-top: 0.6rem;
+        }
+        .info-line {
+            font-size: 0.7rem;
+            color: #ccc;
+            margin-top: 0.4rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+            border-top: 1px dashed #2a2a2a;
+            padding-top: 0.5rem;
+        }
+        .debug-panel {
+            background: #0a0a0a;
+            border: 1px solid #2a2a2a;
+            border-radius: 20px;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            font-size: 0.7rem;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+        .debug-panel pre {
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #0f0;
+        }
+
+        .action-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+            align-items: center;
+        }
+        .filter-input {
+            flex: 1;
+            min-width: 160px;
+            background: #000;
+            border: 1px solid #333;
+            padding: 0.45rem 1rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+        }
+        .filter-input:focus {
+            border-color: #ffffff;
+        }
+        .small-btn {
+            font-size: 0.7rem;
+            padding: 0.45rem 1rem;
+        }
+
+        .result-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+        }
+        .result-card {
+            flex: 1;
+            min-width: 260px;
+            background: #010101;
+            border: 1px solid #242424;
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-header {
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid #222;
+            background: #0b0b0b;
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 0.75rem;
+            text-transform: ;
+            letter-spacing: 0.5px;
+        }
+        .server-list {
+            list-style: none;
+            max-height: 55vh;
+            overflow-y: auto;
+            padding: 0.4rem 0;
+        }
+        .server-list li {
+            padding: 0.5rem 0.9rem;
+            border-bottom: 1px solid #111;
+            font-size: 0.7rem;
+            word-break: break-all;
+        }
+        .server-list li a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            font-family: monospace;
+        }
+        .online-item {
+            color: #ffffff;
+            border-left: 3px solid #ffffff;
+            background: #0a0a0a;
+        }
+        .offline-item {
+            color: #555555;
+            border-left: 3px solid #2e2e2e;
+        }
+        .server-list li:hover {
+            background: #181818;
+        }
+        .badge {
+            background: #1c1c1c;
+            padding: 0.15rem 0.6rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+        }
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.65rem;
+            border-top: 1px solid #1c1c1c;
+            padding-top: 1.2rem;
+            color: #4a4a4a;
+        }
+        .credit {
+            letter-spacing: 0.5px;
+            font-weight: 300;
+        }
+
+        @media (max-width: 720px) {
+            body { padding: 0.8rem; }
+            .control-panel { flex-direction: column; align-items: stretch; }
+            .ctrl-group { justify-content: center; }
+            .stats { justify-content: center; }
+            .result-card { min-width: 100%; }
+            .server-list { max-height: 40vh; }
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: transparent;
+            border-color: #444;
+            color: #666;
+        }
+        .server-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .server-list::-webkit-scrollbar-track {
+            background: #111;
+        }
+        .server-list::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <div class="zone-header">
+        <h1>FTP Zone</h1>
+        <p>File Transfer Protocol Servers Vault</p>
+    </div>
+
+    <div class="control-panel">
+        <div class="ctrl-group">
+            <select id="sourceSelect">
+                <option value="both_raw">Both Server File (RAW)</option>
+                <option value="both_unique">Both Server File (Unique)</option>
+                <option value="one">FTP_One.txt (Only)</option>
+                <option value="two">FTP_Two.txt (Only)</option>
+            </select>
+            <input type="number" id="timeoutSec" value="5" step="0.5" min="1" max="12">
+            <span style="font-size:0.7rem;">sec</span>
+            <button id="startBtn">START</button>
+            <button id="pauseBtn">PAUSE</button>
+            <button id="resetBtn">RESET</button>
+            <button id="debugBtn" class="small-btn">DEBUG PREVIEW</button>
+        </div>
+        <div class="ctrl-group">
+            <div class="stats">
+                <div>ACTIVE <span id="onlineStat">0</span></div>
+                <div>INACTIVE <span id="offlineStat">0</span></div>
+                <div>TOTAL <span id="totalStat">0</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress-area">
+        <div class="progress-meta">
+            <div class="bar"><div class="bar-fill" id="progressFill"></div></div>
+            <div class="progress-text" id="percentVal">0%</div>
+            <div class="progress-text" id="timerVal">00:00:00</div>
+        </div>
+        <div class="current-url" id="currentUrlLabel">idle — select source and start</div>
+        <div class="info-line" id="loadInfo"></div>
+    </div>
+
+    <div id="debugPanel" class="debug-panel">
+        <div style="font-weight:bold; margin-bottom:5px;">FILE PREVIEW (first 20 lines)</div>
+        <pre id="debugContent"></pre>
+    </div>
+
+    <div class="action-row">
+        <input type="text" id="filterActive" placeholder="filter active servers" class="filter-input">
+        <input type="text" id="filterInactive" placeholder="filter inactive servers" class="filter-input">
+        <button id="copyActiveBtn" class="small-btn">COPY ACTIVE</button>
+        <button id="exportTxtBtn" class="small-btn">EXPORT FULL</button>
+        <button id="rescanOfflineBtn" class="small-btn">RESCAN OFFLINE</button>
+    </div>
+
+    <div class="result-grid">
+        <div class="result-card">
+            <div class="card-header">ACTIVE SERVERS <span id="activeBadge" class="badge">0</span></div>
+            <ul id="activeList" class="server-list"></ul>
+        </div>
+        <div class="result-card">
+            <div class="card-header">INACTIVE / OFFLINE <span id="inactiveBadge" class="badge">0</span></div>
+            <ul id="inactiveList" class="server-list"></ul>
+        </div>
+    </div>
+    <footer>
+        <span class="credit"><b>FTP Zone</b> Extension of <b>DarkDoor</b></span>
+    </footer>
+</div>
+
+<script>
+    // DOM elements
+    const sourceSelect = document.getElementById('sourceSelect');
+    const timeoutInput = document.getElementById('timeoutSec');
+    const startBtn = document.getElementById('startBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const debugBtn = document.getElementById('debugBtn');
+    const debugPanel = document.getElementById('debugPanel');
+    const debugContent = document.getElementById('debugContent');
+    const filterActive = document.getElementById('filterActive');
+    const filterInactive = document.getElementById('filterInactive');
+    const copyActiveBtn = document.getElementById('copyActiveBtn');
+    const exportBtn = document.getElementById('exportTxtBtn');
+    const rescanOfflineBtn = document.getElementById('rescanOfflineBtn');
+    const activeListEl = document.getElementById('activeList');
+    const inactiveListEl = document.getElementById('inactiveList');
+    const onlineStatSpan = document.getElementById('onlineStat');
+    const offlineStatSpan = document.getElementById('offlineStat');
+    const totalStatSpan = document.getElementById('totalStat');
+    const activeBadge = document.getElementById('activeBadge');
+    const inactiveBadge = document.getElementById('inactiveBadge');
+    const progressFill = document.getElementById('progressFill');
+    const percentValSpan = document.getElementById('percentVal');
+    const timerValSpan = document.getElementById('timerVal');
+    const currentUrlSpan = document.getElementById('currentUrlLabel');
+    const loadInfoSpan = document.getElementById('loadInfo');
+
+    // state
+    let activeUrls = [];
+    let inactiveUrls = [];
+    let masterList = [];
+    let processedCount = 0;
+    let totalUrls = 0;
+    let isScanning = false;
+    let isPaused = false;
+    let requestQueue = [];
+    let activeRequests = 0;
+    const CONCURRENCY = 5;
+    let abortControllers = [];
+    let scanStartTime = 0;
+    let timerInterval = null;
+    let currentTimeoutMs = 5000;
+
+    // ---------- robust URL extraction: ANY line containing http:// or https:// ----------
+    function extractAllUrlsFromText(rawText) {
+        const lines = rawText.split(/\r?\n/);
+        const urls = [];
+        for (let line of lines) {
+            let trimmed = line.trim();
+            if (!trimmed) continue;
+            // Look for http:// or https:// anywhere in the line (in case of leading spaces or tabs)
+            let match = trimmed.match(/(https?:\/\/[^\s]+)/i);
+            if (match) {
+                let url = match[1];
+                // remove any trailing punctuation that might be attached
+                url = url.replace(/[.,;:!?)]$/, '');
+                urls.push(url);
+            }
+        }
+        return urls;
+    }
+
+    // fetch file with cache buster
+    async function fetchFileNoCache(filePath) {
+        const bust = Date.now();
+        const resp = await fetch(`${filePath}?cb=${bust}`);
+        if (!resp.ok) throw new Error(`Failed to load ${filePath}`);
+        return await resp.text();
+    }
+
+    // load URLs based on mode
+    async function loadUrls() {
+        const mode = sourceSelect.value;
+        const cacheBust = Date.now();
+        
+        if (mode === 'one') {
+            const text = await fetchFileNoCache('./FTP_One.txt');
+            const urls = extractAllUrlsFromText(text);
+            const unique = new Set(urls);
+            loadInfoSpan.innerHTML = `FTP_One.txt: ${urls.length} total lines with URLs | ${unique.size} unique | ${urls.length - unique.size} duplicates within file`;
+            return urls; // return raw (with duplicates if any)
+        }
+        else if (mode === 'two') {
+            const text = await fetchFileNoCache('./FTP_Two.txt');
+            const urls = extractAllUrlsFromText(text);
+            const unique = new Set(urls);
+            loadInfoSpan.innerHTML = `FTP_Two.txt: ${urls.length} total lines with URLs | ${unique.size} unique | ${urls.length - unique.size} duplicates within file`;
+            return urls;
+        }
+        else if (mode === 'both_unique') {
+            const [textOne, textTwo] = await Promise.all([
+                fetchFileNoCache('./FTP_One.txt'),
+                fetchFileNoCache('./FTP_Two.txt')
+            ]);
+            const urlsOne = extractAllUrlsFromText(textOne);
+            const urlsTwo = extractAllUrlsFromText(textTwo);
+            const combinedSet = new Set([...urlsOne, ...urlsTwo]);
+            const totalRaw = urlsOne.length + urlsTwo.length;
+            loadInfoSpan.innerHTML = `FTP_One: ${urlsOne.length} entries | FTP_Two: ${urlsTwo.length} entries | Combined unique: ${combinedSet.size} | Duplicates removed: ${totalRaw - combinedSet.size}`;
+            return Array.from(combinedSet);
+        }
+        else { // both_raw - keep all duplicates
+            const [textOne, textTwo] = await Promise.all([
+                fetchFileNoCache('./FTP_One.txt'),
+                fetchFileNoCache('./FTP_Two.txt')
+            ]);
+            const urlsOne = extractAllUrlsFromText(textOne);
+            const urlsTwo = extractAllUrlsFromText(textTwo);
+            const allUrls = [...urlsOne, ...urlsTwo];
+            const uniqueCount = new Set(allUrls).size;
+            loadInfoSpan.innerHTML = `RAW MODE: FTP_One: ${urlsOne.length} | FTP_Two: ${urlsTwo.length} | TOTAL ENTRIES: ${allUrls.length} | Unique URLs: ${uniqueCount} | Duplicates: ${allUrls.length - uniqueCount}`;
+            return allUrls;
+        }
+    }
+
+    // debug preview: show first 20 lines of each file
+    async function showDebugPreview() {
+        try {
+            const [textOne, textTwo] = await Promise.all([
+                fetchFileNoCache('./FTP_One.txt').catch(e => 'ERROR: ' + e.message),
+                fetchFileNoCache('./FTP_Two.txt').catch(e => 'ERROR: ' + e.message)
+            ]);
+            const linesOne = typeof textOne === 'string' ? textOne.split(/\r?\n/).slice(0, 20) : [textOne];
+            const linesTwo = typeof textTwo === 'string' ? textTwo.split(/\r?\n/).slice(0, 20) : [textTwo];
+            debugContent.innerHTML = `=== FTP_One.txt (first 20 lines) ===\n${linesOne.join('\n')}\n\n=== FTP_Two.txt (first 20 lines) ===\n${linesTwo.join('\n')}`;
+            debugPanel.style.display = 'block';
+            setTimeout(() => { debugPanel.style.display = 'none'; }, 30000);
+        } catch(e) {
+            debugContent.innerText = 'Error loading files: ' + e.message;
+            debugPanel.style.display = 'block';
+        }
+    }
+
+    // render lists
+    function renderLists() {
+        const activeFilter = filterActive.value.toLowerCase().trim();
+        const inactiveFilter = filterInactive.value.toLowerCase().trim();
+        
+        activeListEl.innerHTML = '';
+        const filteredActive = activeUrls.filter(url => url.toLowerCase().includes(activeFilter));
+        filteredActive.forEach(url => {
+            const li = document.createElement('li');
+            li.className = 'online-item';
+            li.innerHTML = `<a target="_blank" rel="noopener noreferrer" href="${url}">${url}</a>`;
+            activeListEl.appendChild(li);
+        });
+
+        inactiveListEl.innerHTML = '';
+        const filteredInactive = inactiveUrls.filter(url => url.toLowerCase().includes(inactiveFilter));
+        filteredInactive.forEach(url => {
+            const li = document.createElement('li');
+            li.className = 'offline-item';
+            li.innerHTML = `<a target="_blank" rel="noopener noreferrer" href="${url}">${url}</a>`;
+            inactiveListEl.appendChild(li);
+        });
+
+        onlineStatSpan.innerText = activeUrls.length;
+        offlineStatSpan.innerText = inactiveUrls.length;
+        totalStatSpan.innerText = totalUrls;
+        activeBadge.innerText = activeUrls.length;
+        inactiveBadge.innerText = inactiveUrls.length;
+    }
+
+    function updateProgress() {
+        const percent = totalUrls === 0 ? 0 : Math.floor((processedCount / totalUrls) * 100);
+        progressFill.style.width = percent + '%';
+        percentValSpan.innerText = percent + '%';
+        renderLists();
+    }
+
+    function abortAllRequests() {
+        for (const ctrl of abortControllers) {
+            try { ctrl.abort(); } catch(e) {}
+        }
+        abortControllers = [];
+    }
+
+    function stopTimer() {
+        if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    }
+
+    function startTimer() {
+        if (timerInterval) stopTimer();
+        scanStartTime = Date.now();
+        timerInterval = setInterval(() => {
+            if (!isScanning || isPaused) return;
+            const elapsed = Date.now() - scanStartTime;
+            const hrs = Math.floor(elapsed / 3600000);
+            const mins = Math.floor((elapsed % 3600000) / 60000);
+            const secs = Math.floor((elapsed % 60000) / 1000);
+            timerValSpan.innerText = `${hrs.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+        }, 500);
+    }
+
+    function finishScan() {
+        isScanning = false;
+        isPaused = false;
+        startBtn.innerText = 'START';
+        stopTimer();
+        currentUrlSpan.innerText = `scan completed — ${activeUrls.length} active, ${inactiveUrls.length} inactive`;
+        updateProgress();
+    }
+
+    async function checkUrlStatus(url, timeoutMs) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+        abortControllers.push(controller);
+        try {
+            await fetch(url, { method: 'HEAD', mode: 'no-cors', signal: controller.signal });
+            clearTimeout(timeoutId);
+            const idx = abortControllers.indexOf(controller);
+            if (idx !== -1) abortControllers.splice(idx, 1);
+            return { url, online: true };
+        } catch (err) {
+            clearTimeout(timeoutId);
+            const idx = abortControllers.indexOf(controller);
+            if (idx !== -1) abortControllers.splice(idx, 1);
+            return { url, online: false };
+        }
+    }
+
+    async function processQueue() {
+        if (!isScanning || isPaused) return;
+        while (activeRequests < CONCURRENCY && requestQueue.length > 0 && isScanning && !isPaused) {
+            const url = requestQueue.shift();
+            activeRequests++;
+            currentUrlSpan.innerText = `scan: ${url}`;
+            const result = await checkUrlStatus(url, currentTimeoutMs);
+            
+            if (result.online) {
+                if (!activeUrls.includes(result.url)) activeUrls.push(result.url);
+                const idx = inactiveUrls.indexOf(result.url);
+                if (idx !== -1) inactiveUrls.splice(idx, 1);
+            } else {
+                if (!inactiveUrls.includes(result.url)) inactiveUrls.push(result.url);
+                const idx = activeUrls.indexOf(result.url);
+                if (idx !== -1) activeUrls.splice(idx, 1);
+            }
+            processedCount++;
+            updateProgress();
+            activeRequests--;
+            
+            if (processedCount >= totalUrls) {
+                finishScan();
+                return;
+            }
+            await processQueue();
+        }
+        if (requestQueue.length === 0 && activeRequests === 0 && isScanning && processedCount >= totalUrls) {
+            finishScan();
+        }
+    }
+
+    async function startFullScan() {
+        if (isScanning && !isPaused) return;
+        if (isScanning && isPaused) {
+            isPaused = false;
+            startBtn.innerText = 'SCANNING';
+            currentUrlSpan.innerText = 'resumed scanning';
+            startTimer();
+            processQueue();
+            return;
+        }
+        // full reset
+        abortAllRequests();
+        stopTimer();
+        isScanning = false;
+        isPaused = false;
+        activeUrls = [];
+        inactiveUrls = [];
+        processedCount = 0;
+        totalUrls = 0;
+        requestQueue = [];
+        activeRequests = 0;
+        updateProgress();
+        
+        try {
+            currentUrlSpan.innerText = 'loading URLs from files...';
+            const urls = await loadUrls();
+            if (!urls.length) throw new Error('no URLs extracted');
+            totalUrls = urls.length;
+            requestQueue = [...urls];
+            isScanning = true;
+            isPaused = false;
+            currentTimeoutMs = (parseFloat(timeoutInput.value) || 5) * 1000;
+            processedCount = 0;
+            activeUrls = [];
+            inactiveUrls = [];
+            updateProgress();
+            startBtn.innerText = 'SCANNING';
+            startTimer();
+            await processQueue();
+        } catch (err) {
+            currentUrlSpan.innerText = `error: ${err.message}`;
+            isScanning = false;
+            startBtn.innerText = 'START';
+            stopTimer();
+            loadInfoSpan.innerText = `failed: ${err.message}`;
+        }
+    }
+
+    function pauseScan() {
+        if (isScanning && !isPaused) {
+            isPaused = true;
+            startBtn.innerText = 'RESUME';
+            currentUrlSpan.innerText = 'paused — click resume';
+            stopTimer();
+        }
+    }
+
+    function resetScan() {
+        abortAllRequests();
+        stopTimer();
+        isScanning = false;
+        isPaused = false;
+        activeRequests = 0;
+        processedCount = 0;
+        totalUrls = 0;
+        activeUrls = [];
+        inactiveUrls = [];
+        requestQueue = [];
+        startBtn.innerText = 'START';
+        currentUrlSpan.innerText = 'reset — select source and start';
+        updateProgress();
+        timerValSpan.innerText = '00:00:00';
+        progressFill.style.width = '0%';
+        percentValSpan.innerText = '0%';
+        loadInfoSpan.innerText = '';
+    }
+
+    async function copyActiveUrls() {
+        if (activeUrls.length === 0) {
+            currentUrlSpan.innerText = 'no active servers to copy';
+            return;
+        }
+        const text = activeUrls.join('\n');
+        try {
+            await navigator.clipboard.writeText(text);
+            currentUrlSpan.innerText = `copied ${activeUrls.length} active urls`;
+        } catch (err) {
+            currentUrlSpan.innerText = 'clipboard copy failed';
+        }
+    }
+
+    function exportFullReport() {
+        let content = '# FTP ZONE BDIX SCAN REPORT\n';
+        content += `# generated: ${new Date().toISOString()}\n`;
+        content += `# total URLs scanned: ${totalUrls}\n`;
+        content += `# active: ${activeUrls.length}  inactive: ${inactiveUrls.length}\n\n`;
+        content += '## ACTIVE SERVERS ##\n';
+        activeUrls.forEach(u => content += u + '\n');
+        content += '\n## INACTIVE SERVERS ##\n';
+        inactiveUrls.forEach(u => content += u + '\n');
+        const blob = new Blob([content], {type: 'text/plain'});
+        const a = document.createElement('a');
+        const timestamp = new Date().toISOString().slice(0,19).replace(/:/g, '-');
+        a.download = `ftpzone_scan_${timestamp}.txt`;
+        a.href = URL.createObjectURL(blob);
+        a.click();
+        URL.revokeObjectURL(a.href);
+        currentUrlSpan.innerText = 'export completed';
+    }
+
+    async function rescanOffline() {
+        if (isScanning) {
+            currentUrlSpan.innerText = 'scan already in progress';
+            return;
+        }
+        if (inactiveUrls.length === 0) {
+            currentUrlSpan.innerText = 'no inactive servers to rescan';
+            return;
+        }
+        const offlineCopy = [...inactiveUrls];
+        abortAllRequests();
+        stopTimer();
+        isScanning = false;
+        isPaused = false;
+        activeRequests = 0;
+        const previousActive = [...activeUrls];
+        totalUrls = offlineCopy.length;
+        processedCount = 0;
+        activeUrls = [...previousActive];
+        inactiveUrls = [];
+        requestQueue = [...offlineCopy];
+        isScanning = true;
+        currentTimeoutMs = (parseFloat(timeoutInput.value) || 5) * 1000;
+        updateProgress();
+        startBtn.innerText = 'SCANNING';
+        startTimer();
+        currentUrlSpan.innerText = `rescanning ${offlineCopy.length} offline servers...`;
+        
+        async function rescanQueue() {
+            if (!isScanning || isPaused) return;
+            while (activeRequests < CONCURRENCY && requestQueue.length > 0 && isScanning && !isPaused) {
+                const url = requestQueue.shift();
+                activeRequests++;
+                currentUrlSpan.innerText = `rescan: ${url}`;
+                const result = await checkUrlStatus(url, currentTimeoutMs);
+                if (result.online) {
+                    if (!activeUrls.includes(result.url)) activeUrls.push(result.url);
+                    const idx = inactiveUrls.indexOf(result.url);
+                    if (idx !== -1) inactiveUrls.splice(idx, 1);
+                } else {
+                    if (!inactiveUrls.includes(result.url)) inactiveUrls.push(result.url);
+                    const idx = activeUrls.indexOf(result.url);
+                    if (idx !== -1) activeUrls.splice(idx, 1);
+                }
+                processedCount++;
+                updateProgress();
+                activeRequests--;
+                if (processedCount >= totalUrls) {
+                    isScanning = false;
+                    startBtn.innerText = 'START';
+                    stopTimer();
+                    currentUrlSpan.innerText = `rescan finished: ${activeUrls.length} active, ${inactiveUrls.length} inactive`;
+                    updateProgress();
+                    return;
+                }
+                await rescanQueue();
+            }
+            if (requestQueue.length === 0 && activeRequests === 0 && isScanning && processedCount >= totalUrls) {
+                isScanning = false;
+                startBtn.innerText = 'START';
+                stopTimer();
+                currentUrlSpan.innerText = `rescan completed: ${activeUrls.length} active, ${inactiveUrls.length} inactive`;
+                updateProgress();
+            }
+        }
+        await rescanQueue();
+    }
+
+    // event binding
+    startBtn.addEventListener('click', startFullScan);
+    pauseBtn.addEventListener('click', pauseScan);
+    resetBtn.addEventListener('click', resetScan);
+    copyActiveBtn.addEventListener('click', copyActiveUrls);
+    exportBtn.addEventListener('click', exportFullReport);
+    rescanOfflineBtn.addEventListener('click', rescanOffline);
+    debugBtn.addEventListener('click', showDebugPreview);
+    filterActive.addEventListener('input', () => renderLists());
+    filterInactive.addEventListener('input', () => renderLists());
+    
+    resetScan();
+</script>
+</body>
+</html>

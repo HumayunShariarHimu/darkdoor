@@ -24,6 +24,8 @@ The ecosystem is extremely volatile — services appear and disappear within hou
 <!-- STATUS_TABLE_START -->
 | URL | Status | Domain | Log Policy | Technology | Scam / Inject |
 |:----|:------:|:------|:-----------|:-----------|:-------------:|
+| `https://www.4everproxy.com/tor-proxy` | UP | 4everProxy.com | full | custom | no |
+| `https://www.browserling.com/tor-testing` | UP | browserling.com | full | custom | no |
 | `https://onion.re/` | DOWN | onion.re | full | custom | no |
 | `https://onion.foundation/` | DOWN | onion.foundation | full | custom | no |
 | `https://onion.gg` | DOWN | onion.gg | full | custom | no |
